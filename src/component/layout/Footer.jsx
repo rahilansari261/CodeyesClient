@@ -98,6 +98,7 @@ export default function Footer() {
                             <div className="space-y-2 uppercase">
                                 <p><Link to="/">HOME</Link></p>
                                 <p><Link to="/about">ABOUT</Link></p>
+                                <p><Link to="/services">SERVICES</Link></p>
                                 <p><Link to="/portfolio">PORTFOLIO</Link></p>
                                 <p><Link to="/faq">FAQs</Link></p>
                                 <p><Link to="/our-client">OUR CLIENT</Link></p>

@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
-import { BASE_URL } from "../../utils/config";
+import { BASE_URL, IMAGE_BASE_URL } from "../../utils/config";
 import Loader from "../layout/Loader";
 
 // const array = [
@@ -162,7 +162,7 @@ const Clients2 = () => {
                         onMouseLeave={() => setHoveredIndex(null)}
                     >
                         <img
-                            src={item?.banner_image}
+                            src={`${IMAGE_BASE_URL}/${item?.banner_image}`}
                             alt={`Client ${i}`}
                             className="h-full object-contain"
                         />

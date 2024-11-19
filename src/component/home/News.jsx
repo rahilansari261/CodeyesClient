@@ -5,6 +5,7 @@ import Loader from '../layout/Loader';
 import moment from 'moment';
 import { stripHtml } from "string-strip-html";
 import { BASE_URL } from '../../utils/config';
+import { Link } from 'react-router-dom';
 
 export default function News() {
     const [blogPosts, setBlogData] = useState([]);
@@ -61,9 +62,9 @@ export default function News() {
                                         <p className='uppercase text-sm'>({item?.category})</p>
                                         <h2 className='capitalize text-xl lg:text-2xl font-semibold'>{limitedTitle}</h2>
                                         <p className='text-sm'>{limitedContent}</p>
-                                        <p className='flex uppercase text-sm items-center gap-2'>
+                                        <Link to={`posts/${item.id}` }className='flex uppercase text-sm items-center gap-2'>
                                             <GoDotFill className='text-[#f8a065]' />  Read More
-                                        </p>
+                                        </Link>
                                     </div>
                                 </div>
                             )

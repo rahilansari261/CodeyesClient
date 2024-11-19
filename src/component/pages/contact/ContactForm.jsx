@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { GoDotFill } from "react-icons/go";
 import { GoogleMap, Marker, LoadScript, InfoWindow } from '@react-google-maps/api';
 import Loader from "../../layout/Loader";
-import { BASE_URL } from "../../../utils/config";
+import { BASE_URL, GOOGLE_MAPS_API_KEY } from "../../../utils/config";
 import axios from "axios";
 
 const mapContainerStyle = {
@@ -124,7 +124,7 @@ const ContactForm = ({ mapCenter, selectedAddress }) => {
         <div className="border border-black rounded-[50px] overflow-hidden justify-center">
             <div className="grid lg:grid-cols-2 p-6 bg-[#cbdec6] rounded-lg shadow-md h-full">
                 <div className="w-full lg:col-span-1">
-                    <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
+                    <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
                         <GoogleMap
                             mapContainerStyle={mapContainerStyle}
                             center={mapCenter}
