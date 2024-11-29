@@ -2,9 +2,13 @@ import React from "react";
 import { GoDotFill } from "react-icons/go";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../../../utils/config";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { addNewComment } from "../../../utils/blogSlice";
 
 export default function CommentForm() {
   const { id } = useParams();
+  const dispatch=useDispatch()
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -29,12 +33,23 @@ export default function CommentForm() {
         body: JSON.stringify(data),
       });
 
+      if (response.ok) {
+        
+        
+        //
+       toast.success("Comment added successfully")
+      }
       if (!response.ok) {
+        toast.error("Failed to submit the comment")
         throw new Error("Failed to submit the comment");
       }
 
       const result = await response.json();
-      console.log("Comment submitted successfully:", result);
+    //  console.log(result.data._id) //changed here
+      dispatch(addNewComment(result.data._id))
+      // console.log("Comment submitted successfully:", result);
+      // console.log(" reply Comment submitted successfully:", result);
+
 
       // Optionally, clear the form fields after successful submission
       e.target.reset();

@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import { GoDotFill } from "react-icons/go";
 import { BASE_URL } from "../../../utils/config";
+import { addNewComment } from "../../../utils/blogSlice";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const Comment = ({ comment, blogId }) => {
   const [showModal, setShowModal] = useState(false);
   const [commentId, setCommentId] = useState(null);
+  const dispatch = useDispatch()
   const handleReplyClick = (commId) => {
     setCommentId(commId); // Set the comment ID to the clicked comment's ID
     setShowModal(true); // Show the modal
@@ -29,6 +33,7 @@ const Comment = ({ comment, blogId }) => {
       email,
       website,
     };
+    let count = 1;
 
     try {
       const response = await fetch(`${BASE_URL}/blogs/${blogId}/comments/${commentId}/replies`, {
@@ -38,13 +43,20 @@ const Comment = ({ comment, blogId }) => {
         },
         body: JSON.stringify(data),
       });
+      // console.log(response)
 
       if (!response.ok) {
         throw new Error("Failed to submit the comment");
       }
+      if (response.ok) {
+        
+       toast.success("Reply added successfully")
+      }
 
       const result = await response.json();
-      console.log("Comment submitted successfully:", result);
+     count = count +1;
+      dispatch(addNewComment(count))
+      // console.log("Comment submitted successfully:", result);
 
       // Optionally, clear the form fields after successful submission
       e.target.reset();
@@ -147,7 +159,7 @@ const Comment = ({ comment, blogId }) => {
   );
 };
 const CommentSection = ({ blogPosts }) => {
-  console.log(blogPosts);
+  // console.log(blogPosts);
   const totalComments = blogPosts.comments?.length;
   const totalReplies = blogPosts.comments?.reduce((acc, comment) => acc + comment?.replies?.length, 0);
   const totalCount = totalComments + totalReplies;

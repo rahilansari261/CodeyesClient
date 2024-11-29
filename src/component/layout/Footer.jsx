@@ -6,6 +6,8 @@ import { SlArrowUp } from 'react-icons/sl';
 import { Link } from 'react-router-dom';
 import { BASE_URL } from '../../utils/config';
 import Loader from './Loader';
+import { toast } from "react-toastify";
+
 
 export default function Footer() {
     const [isVisible, setIsVisible] = useState(false);
@@ -27,8 +29,10 @@ export default function Footer() {
             const resp = await axios.post(`${BASE_URL}/add-footer-email`, formData);
             if (resp?.data?.http_status_code === 201) {
                 setEmail("");
+                toast.success("Email sent successfully")
             } else {
                 console.log(resp?.data?.message || "Something went wrong");
+                toast.error("Something went wrong")
             }
         } catch (err) {
             console.error("Error:", err);

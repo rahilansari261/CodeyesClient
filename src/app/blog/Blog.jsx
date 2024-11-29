@@ -8,19 +8,29 @@ import moment from 'moment';
 import Loader from '../../component/layout/Loader';
 import { stripHtml } from 'string-strip-html';
 import { BASE_URL } from '../../utils/config';
+import { useDispatch, useSelector } from 'react-redux';
+import { addAllBlog, setFirstBlogVisit, setShowBlogs } from '../../utils/blogSlice';
 
 export default function Blog() {
-    const [blogPosts, setBlogData] = useState([]);
+    const dispatch =useDispatch()
+    const blogPosts = useSelector(store=> store.blog.showBlogs)
+    const firstBlogVisit=useSelector(store=> store.blog.firstBlogVisit)
+    // console.log(firstBlogVisit)
+    // console.log(blogPosts)
+
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+   
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
                 const response = await axios.get(`${BASE_URL}/get-blog?organizationId=codeyes_media`);
-                console.log("response", response);
-
-                setBlogData(response.data.data);
+               if(firstBlogVisit){
+                dispatch(addAllBlog(response.data.data))
+                dispatch(setShowBlogs(response.data.data))
+                dispatch(setFirstBlogVisit())}
+               
+               
                 setLoading(false);
             } catch (err) {
                 setError("Failed to fetch blog data.");

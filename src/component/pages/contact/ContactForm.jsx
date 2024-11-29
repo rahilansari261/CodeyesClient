@@ -4,6 +4,7 @@ import { GoogleMap, Marker, LoadScript, InfoWindow } from '@react-google-maps/ap
 import Loader from "../../layout/Loader";
 import { BASE_URL, GOOGLE_MAPS_API_KEY } from "../../../utils/config";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const mapContainerStyle = {
     width: '100%',
@@ -37,9 +38,10 @@ const ContactForm = ({ mapCenter, selectedAddress }) => {
     });
 
     const handleServiceSelect = (service) => {
-        setSelectedService(service.label);
+        // console.log(service.service)
+        setSelectedService(service.service);
         setDropdownOpen(false);
-        setFormData({ ...formData, option: service.value });
+        setFormData({ ...formData, option: service.service });
     };
 
     const handleMarkerClick = (position) => {
@@ -69,6 +71,7 @@ const ContactForm = ({ mapCenter, selectedAddress }) => {
         setSuccessMessage("");
         setErrorMessage("");
         try {
+            console.log(JSON.stringify(formData))
             const response = await fetch(`${BASE_URL}/add-contact-us?organizationId=codeyes_media`, {
                 method: "POST",
                 headers: {
@@ -78,10 +81,13 @@ const ContactForm = ({ mapCenter, selectedAddress }) => {
             });
             const result = await response.json();
             if (response.ok) {
+                toast.success("Message sent successfully!")
                 setSuccessMessage("Message sent successfully!");
                 setFormData({ name: "", email: "", message: "" });
+                setSelectedService("")
             } else {
                 setErrorMessage(result.message || "Failed to send message. Please try again.");
+                toast.error("Failed to send message. Please try again.")
             }
         } catch (error) {
             setErrorMessage("An error occurred. Please try again later.");

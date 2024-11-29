@@ -3,16 +3,23 @@ import React, { useEffect, useState } from "react";
 import { IoSearchSharp } from "react-icons/io5";
 import { BASE_URL } from "../../utils/config";
 import Loader from "../../component/layout/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { addAllBlog, setShowBlogs } from "../../utils/blogSlice";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
   const [categories, setCategories] = useState();
+  const dispatch = useDispatch()
+  const allBlogs = useSelector(store=> store.blog.allBlogs)
+  console.log(allBlogs)
+  const navigate = useNavigate()
 
   const [tags, setTags] = useState();
   const [catloading, setCatLoading] = useState(true);
   const [tagloading, setTagLoading] = useState(true);
 
   useEffect(() => {
-    const fetchCatData = async () => {
+    const fetchCatData  = async () => {
       const resp = await axios.get(`${BASE_URL}/get-blog-category?organizationId=codeyes_media`);
       if (resp?.data?.http_status_code === 200) {
         setCategories(resp.data.data);
@@ -36,10 +43,25 @@ export default function Sidebar() {
   if (tagloading) {
     return <Loader />;
   }
+  const handleCategoryClick = (catName)=>{
+   
+    const showBlog = allBlogs.filter(b=> b.category.name == catName)
+    dispatch(setShowBlogs(showBlog))
+    navigate("/blog")
+  }
+  const handleALLCategoryClick=()=>{
+    dispatch(setShowBlogs(allBlogs))
+   
+  }
+  const handleTagClick =(tagName)=>{
+    const showBlog = allBlogs.filter(b=> b.tags.includes(tagName))
+    dispatch(setShowBlogs(showBlog))
+    navigate("/blog")
+  }
   return (
     <>
       <div className="flex flex-col gap-16">
-        <div className={`border border-black rounded-3xl overflow-hidden bg-[#d2ebf8] py-10 space-y-5`}>
+        {/* <div className={`border border-black rounded-3xl overflow-hidden bg-[#d2ebf8] py-10 space-y-5`}>
           <div className="px-[50px] xl:px-[70px]">
             <div className="rounded-full overflow-hidden border border-black ">
               <img src="/image/about/blog-author-img1.jpg" alt="Error" className="w-full h-full object-contain" />
@@ -55,13 +77,16 @@ export default function Sidebar() {
           <button className="border border-r-0 border-black rounded-full bg-[#f8a065] p-2 absolute right-0 h-full w-[65px]">
             <IoSearchSharp className="text-xl m-auto" />
           </button>
-        </div>
+        </div> */}
         <div className="space-y-5">
           <h4 className="text-3xl font-semibold">Categories</h4>
           <div className="space-y-4">
+          <p className="uppercase hover:text-[#f8a065] cursor-pointer text-sm"  onClick={()=> handleALLCategoryClick()}>
+                  All
+                </p>
             {categories.map((cat) => {
               return (
-                <p className="uppercase hover:text-[#f8a065] cursor-pointer text-sm" key={cat.id}>
+                <p className="uppercase hover:text-[#f8a065] cursor-pointer text-sm" key={cat.id} onClick={()=> handleCategoryClick(cat.name)}>
                   {cat.name}
                 </p>
               );
@@ -70,40 +95,46 @@ export default function Sidebar() {
         </div>
         <div className="space-y-5">
           <h4 className="text-3xl font-semibold">Recent Post</h4>
+          
           <div className="space-y-4 flex gap-5">
             <div className="w-[80px] rounded-2xl overflow-hidden">
-              <img src="/image/about/blog-single-img7.jpg" alt="Error" className="w-full h-full object-contain" />
+              <img src={allBlogs[0].banner_image} alt="Error" className="w-full h-full object-contain" />
             </div>
             <div className="">
-              <h5 className="text-lg font-semibold">Artist’s Vision</h5>
-              <p className="text-[15px]">September 11, 2024</p>
+              <h5 className="text-lg font-semibold">{allBlogs[0].title}</h5>
+              <p className="text-[15px]">{allBlogs[0].createdAt.slice(0,10)}</p>
             </div>
           </div>
           <div className="space-y-4 flex gap-5">
             <div className="w-[80px] rounded-2xl overflow-hidden">
-              <img src="/image/about/blog-single-img8.jpg" alt="Error" className="w-full h-full object-contain" />
+              <img src={allBlogs[1].banner_image} alt="Error" className="w-full h-full object-contain" />
             </div>
             <div className="">
-              <h5 className="text-lg font-semibold">Visual Language</h5>
-              <p className="text-[15px]">September 11, 2024</p>
+              <h5 className="text-lg font-semibold">{allBlogs[1].title}</h5>
+              <p className="text-[15px]">{allBlogs[1].createdAt.slice(0,10)}</p>
             </div>
           </div>
           <div className="space-y-4 flex gap-5">
             <div className="w-[80px] rounded-2xl overflow-hidden">
-              <img src="/image/about/blog-single-img9.jpg" alt="Error" className="w-full h-full object-contain" />
+              <img src={allBlogs[2].banner_image} alt="Error" className="w-full h-full object-contain" />
             </div>
             <div className="">
-              <h5 className="text-lg font-semibold">Our New Projects</h5>
-              <p className="text-[15px]">September 11, 2024</p>
+              <h5 className="text-lg font-semibold">{allBlogs[2].title}</h5>
+              <p className="text-[15px]">{allBlogs[2].createdAt.slice(0,10)}</p>
             </div>
           </div>
+          
+          
         </div>
         <div className="space-y-5">
           <h4 className="text-3xl font-semibold">Tags</h4>
           <div className="flex gap-4 flex-wrap">
+          <p className="uppercase border border-black w-fit rounded-full py-1 px-4 hover:bg-[#f8a065] hover:text-white cursor-pointer text-sm"  onClick={()=> handleALLCategoryClick()}>
+                  All
+                </p>
             {tags.map((tag) => {
               return (
-                <p className="uppercase border border-black w-fit rounded-full py-1 px-4 hover:bg-[#f8a065] hover:text-white cursor-pointer text-sm" key={tag.id}>
+                <p className="uppercase border border-black w-fit rounded-full py-1 px-4 hover:bg-[#f8a065] hover:text-white cursor-pointer text-sm" onClick={()=> handleTagClick(tag.name)} key={tag.id}>
                   {tag.name}
                 </p>
               );
