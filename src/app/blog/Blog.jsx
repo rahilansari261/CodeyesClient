@@ -72,7 +72,7 @@ export default function Blog() {
                                     <div key={post.id} className="space-y-4">
                                         <Link to={`/post/${post.id}`} >
                                             <div className="relative h-[500px] rounded-2xl overflow-hidden">
-                                                {/* {console.log(post.banner_image)} */}
+                                                {console.log(post?.title +"  " +   post.banner_image)}
                                                 <img src={post.banner_image} alt={post?.title} className="h-full object-cover w-full" />
                                                 <div className="border border-black rounded-xl bg-[#f8a065] absolute top-6 left-6 p-2 w-min text-center">
                                                     <h4 className="text-2xl font-semibold">

@@ -75,6 +75,7 @@ const Clients = () => {
           onMouseEnter={() => setHoveredIndex(i)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
+          {console.log(`${IMAGE_BASE_URL}/${item?.banner_image}`)}
           <img src={`${IMAGE_BASE_URL}/${item?.banner_image}`} alt={`Client ${i}`} className="h-full object-contain" />
         </div>
       ))}

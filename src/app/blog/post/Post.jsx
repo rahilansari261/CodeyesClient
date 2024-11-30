@@ -201,7 +201,7 @@ export default function Post() {
             try {
                 const response = await axios.get(`${BASE_URL}/get-blog/${id}`);
                 setBlogData(response.data.data);
-                // console.log(response.data.data)
+                console.log(response.data.data)
                 setLoading(false);
             } catch (err) {
                 setError("Failed to fetch blog data.");
