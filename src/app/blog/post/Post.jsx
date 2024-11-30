@@ -273,7 +273,9 @@ const currentPageUrl = window.location.href;
                             description={blogPosts?.authorDescription ||"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor dolore magna aliqua."}
                             imageUrl={blogPosts?.authorProfile ||"https://i.pravatar.cc/150?img=32"}
                         />
+                        <div >
                         <CommentSection blogPosts={blogPosts}  />
+                        </div>
                         <CommentForm />
                     </div>
                     <div className='col-span-12 lg:col-span-1 hidden lg:block'></div>

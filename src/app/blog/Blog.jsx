@@ -48,6 +48,7 @@ export default function Blog() {
     if (error) {
         return <div>{error}</div>;
     }
+   
 
     return (
         <>
@@ -66,11 +67,12 @@ export default function Blog() {
 
                                 const limitedContent = parsedContent.split(" ").slice(0, 150).join(" ") + (parsedContent.split(" ").length > 150 ? "..." : "");
                                 const limitedTitle = post?.title?.length > 25 ? post?.title.substring(0, 25) + "..." : post?.title;
-
+// console.log(post)
                                 return (
                                     <div key={post.id} className="space-y-4">
                                         <Link to={`/post/${post.id}`} >
                                             <div className="relative h-[500px] rounded-2xl overflow-hidden">
+                                                {/* {console.log(post.banner_image)} */}
                                                 <img src={post.banner_image} alt={post?.title} className="h-full object-cover w-full" />
                                                 <div className="border border-black rounded-xl bg-[#f8a065] absolute top-6 left-6 p-2 w-min text-center">
                                                     <h4 className="text-2xl font-semibold">
