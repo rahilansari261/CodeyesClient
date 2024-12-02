@@ -9,17 +9,17 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
   const [categories, setCategories] = useState();
-  const dispatch = useDispatch()
-  const allBlogs = useSelector(store=> store.blog.allBlogs)
+  const dispatch = useDispatch();
+  const allBlogs = useSelector((store) => store.blog.allBlogs);
   // console.log(allBlogs)
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [tags, setTags] = useState();
   const [catloading, setCatLoading] = useState(true);
   const [tagloading, setTagLoading] = useState(true);
 
   useEffect(() => {
-    const fetchCatData  = async () => {
+    const fetchCatData = async () => {
       const resp = await axios.get(`${BASE_URL}/get-blog-category?organizationId=codeyes_media`);
       if (resp?.data?.http_status_code === 200) {
         setCategories(resp.data.data);
@@ -43,22 +43,20 @@ export default function Sidebar() {
   if (tagloading) {
     return <Loader />;
   }
-  const handleCategoryClick = (catName)=>{
-   
-    const showBlog = allBlogs.filter(b=> b.category.name == catName)
-    dispatch(setShowBlogs(showBlog))
-    navigate("/blog")
-  }
-  const handleALLCategoryClick=()=>{
-    dispatch(setShowBlogs(allBlogs))
-    navigate("/blog")
-   
-  }
-  const handleTagClick =(tagName)=>{
-    const showBlog = allBlogs.filter(b=> b.tags.includes(tagName))
-    dispatch(setShowBlogs(showBlog))
-    navigate("/blog")
-  }
+  const handleCategoryClick = (catName) => {
+    const showBlog = allBlogs.filter((b) => b.category.name === catName);
+    dispatch(setShowBlogs(showBlog));
+    navigate("/blog");
+  };
+  const handleALLCategoryClick = () => {
+    dispatch(setShowBlogs(allBlogs));
+    navigate("/blog");
+  };
+  const handleTagClick = (tagName) => {
+    const showBlog = allBlogs.filter((b) => b.tags.includes(tagName));
+    dispatch(setShowBlogs(showBlog));
+    navigate("/blog");
+  };
   return (
     <>
       <div className="flex flex-col gap-16">
@@ -82,12 +80,12 @@ export default function Sidebar() {
         <div className="space-y-5">
           <h4 className="text-3xl font-semibold">Categories</h4>
           <div className="space-y-4">
-          <p className="uppercase hover:text-[#f8a065] cursor-pointer text-sm"  onClick={()=> handleALLCategoryClick()}>
-                  All
-                </p>
+            <p className="uppercase hover:text-[#f8a065] cursor-pointer text-sm" onClick={() => handleALLCategoryClick()}>
+              All
+            </p>
             {categories.map((cat) => {
               return (
-                <p className="uppercase hover:text-[#f8a065] cursor-pointer text-sm" key={cat.id} onClick={()=> handleCategoryClick(cat.name)}>
+                <p className="uppercase hover:text-[#f8a065] cursor-pointer text-sm" key={cat.id} onClick={() => handleCategoryClick(cat.name)}>
                   {cat.name}
                 </p>
               );
@@ -98,34 +96,41 @@ export default function Sidebar() {
           <h4 className="text-3xl font-semibold">Recent Post</h4>
           {
             // let count = 0;
-            allBlogs.map((post,index)=>{
-  if(index<3){
-    return <Link to={`/post/${post.id}`}> <div key={post.id} className="space-y-4 flex gap-5">
-            <div className="w-[80px] rounded-2xl overflow-hidden">
-              <img src={post.banner_image} alt="Error" className="w-full h-full object-contain" />
-            </div>
-            <div className="">
-              <h5 className="text-lg font-semibold">{post.title}</h5>
-              <p className="text-[15px]">{post.createdAt.slice(0,10)}</p>
-            </div>
-          </div></Link>
-}
+            allBlogs.map((post, index) => {
+              if (index < 3) {
+                return (
+                  <Link to={`/post/${post.id}`} key={post.id}>
+                    {" "}
+                    <div className="space-y-4 flex gap-5">
+                      <div className="w-[80px] rounded-2xl overflow-hidden">
+                        <img src={post.banner_image} alt="Error" className="w-full h-full object-contain" />
+                      </div>
+                      <div className="">
+                        <h5 className="text-lg font-semibold">{post.title}</h5>
+                        <p className="text-[15px]">{post.createdAt.slice(0, 10)}</p>
+                      </div>
+                    </div>
+                  </Link>
+                );
+              } else {
+                return null;
+              }
             })
           }
-          
-         
-          
-          
         </div>
         <div className="space-y-5">
           <h4 className="text-3xl font-semibold">Tags</h4>
           <div className="flex gap-4 flex-wrap">
-          <p className="uppercase border border-black w-fit rounded-full py-1 px-4 hover:bg-[#f8a065] hover:text-white cursor-pointer text-sm"  onClick={()=> handleALLCategoryClick()}>
-                  All
-                </p>
+            <p className="uppercase border border-black w-fit rounded-full py-1 px-4 hover:bg-[#f8a065] hover:text-white cursor-pointer text-sm" onClick={() => handleALLCategoryClick()}>
+              All
+            </p>
             {tags.map((tag) => {
               return (
-                <p className="uppercase border border-black w-fit rounded-full py-1 px-4 hover:bg-[#f8a065] hover:text-white cursor-pointer text-sm" onClick={()=> handleTagClick(tag.name)} key={tag.id}>
+                <p
+                  className="uppercase border border-black w-fit rounded-full py-1 px-4 hover:bg-[#f8a065] hover:text-white cursor-pointer text-sm"
+                  onClick={() => handleTagClick(tag.name)}
+                  key={tag.id}
+                >
                   {tag.name}
                 </p>
               );
